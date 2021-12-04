@@ -8,7 +8,7 @@ namespace bookStore_v._0._02.Models
 {
     class Profile
     {
-        public string ID { get; set; }
+        public string ProfileID { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
         public string EMail { get; set; }

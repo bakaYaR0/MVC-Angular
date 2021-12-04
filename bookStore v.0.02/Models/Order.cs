@@ -7,25 +7,7 @@ using System.Threading.Tasks;
 namespace bookStore_v._0._02.Models
 {
     class Order
-    {
-        enum StatusList
-        {
-            PendingPayment,
-            OnHold,
-            Processing,
-            Canceled,
-            Failed,
-            Refunded,
-            Completed
-        }
-
-        enum Delivery
-        {
-            PostOffice,
-            Courier,
-            PickupPoint,
-            NoDelivery
-        }
+    {      
         public string OrderID { get; set; }
         public DateTime OrderDate { get; set; }
         public List<Book> OrderItems {get; set;}

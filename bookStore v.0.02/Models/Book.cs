@@ -9,6 +9,7 @@ namespace bookStore_v._0._02.Models
 {
     class Book
     {
+        public int BookID { get; set; }
         public string ISBN { get; set; }
         public string Title { get; set; }
         public string Subtitle { get; set; }
