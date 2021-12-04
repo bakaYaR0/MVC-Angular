@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bookStore_v._0._02.Models
 {
-    class Order
+    public class Order
     {      
         public string OrderID { get; set; }
         public DateTime OrderDate { get; set; }

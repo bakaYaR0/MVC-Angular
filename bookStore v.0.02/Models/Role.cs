@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bookStore_v._0._02.Models
 {
-    class Role
+    public class Role
     {
         public int RoleID { get; set; }
         public int ProfileID { get; set; }

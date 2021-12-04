@@ -9,44 +9,15 @@ namespace bookStore_v._0._02
 {
     class Program
     {
-        public class BookShopContext : DbContext
-        {
-            public BookShopContext()
-                : base("DbConnection")
-            { }
-
-            public DbSet<Address> Addresses { get; set; }
-            public DbSet<Book> Books { get; set; }
-            public DbSet<Order> Orders { get; set; }
-            public DbSet<Profile> Profiles { get; set; }
-            public DbSet<Role> Roles { get; set; }
-        }
-
-
         static void Main(string[] args)
         {
-            using (BookShopContext db = new BookShopContext())
+            using (var bookShop = new BookShopContext())
             {
-                // создаем два объекта User
-                Book user1 = new Book { ISBN = "Tom", BookID = 33 };
-                Book user2 = new Book { ISBN = "Sam", BookID = 26 };
+                var book = new Book() { ISBN = "9781593279509" };
 
-                // добавляем их в бд
-                db.Books.Add(user1);
-                db.Books.Add(user2);
-                db.SaveChanges();
-                Console.WriteLine("Объекты успешно сохранены");
-
-                // получаем объекты из бд и выводим на консоль
-                var books = db.Books;
-                Console.WriteLine("Список объектов:");
-                foreach (Book u in books)
-                {
-                    Console.WriteLine("{0}.{1} - {2}", u.BookID, u.ISBN);
-                }
+                bookShop.Books.Add(book);
+                bookShop.SaveChanges();
             }
-            Console.Read();
-
 
             Book[] bookShelf = JsonConvert.DeserializeObject<Book[]>(File.ReadAllText(@"D:\Projects\repos\bookStore v.0.02\jsconfig1.json"));
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace bookStore_v._0._02.Models
 {
-    class Profile
+    public class Profile
     {
         public string ProfileID { get; set; }
         public string Login { get; set; }
