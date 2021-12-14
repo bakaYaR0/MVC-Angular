@@ -21,6 +21,7 @@ namespace bookStore_v._0._02.Logic
             bookShop.Books.AddRange(bookShelf);
             bookShop.SaveChanges();
         }
+
         public static List<Book> FindBooksByField(string field)
         {
             using var bookShop = new BookShopContext();
@@ -37,6 +38,7 @@ namespace bookStore_v._0._02.Logic
                 return new List<Book>(); //what do we need to return ? 
             }
         }
+
         public static Book FindBookByID(string id)
         {
             using var bookShop = new BookShopContext();
@@ -51,6 +53,7 @@ namespace bookStore_v._0._02.Logic
                 return new Book(); //what do we need to return ? 
             }
         }
+
         public static void CreateBook(string book)
         {
             using var bookShop = new BookShopContext();
@@ -67,6 +70,7 @@ namespace bookStore_v._0._02.Logic
             }
             
         }
+
         public static void EditBook(Book book, string field, string edit)
         {
             using var bookShop = new BookShopContext();
@@ -81,11 +85,13 @@ namespace bookStore_v._0._02.Logic
                 Console.WriteLine(e.Message);
             }      
         }
+
         public static List<Book> ShowCatalog()
         {
             using var bookShop = new BookShopContext();
             return bookShop.Books.OrderBy(x => x.BookID).ToList();
         }
+
         public static void DeleteBook(Book book)
         {
             using var bookShop = new BookShopContext();
@@ -101,6 +107,7 @@ namespace bookStore_v._0._02.Logic
                 Console.WriteLine(e.Message);
             }
         }
+
         public static void StockUpdate(string id, int amount)
         {
             int intID = int.Parse(id);

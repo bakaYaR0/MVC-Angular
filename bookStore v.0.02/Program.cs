@@ -28,10 +28,11 @@ namespace bookStore_v._0._02
                           }";
 
             CatalogLogic.CreateBook(newBook);
+
             var bookFound = CatalogLogic.FindBookByID("58");
             Console.WriteLine(bookFound.Author + "\n" + bookFound.Title + "\n" + bookFound.Pages + "\n" + bookFound.Value + "\n");
+            
             CatalogLogic.DeleteBook(bookFound);
-
 
             var bookChoices = CatalogLogic.FindBooksByField("au");
             foreach (var book in bookChoices)
