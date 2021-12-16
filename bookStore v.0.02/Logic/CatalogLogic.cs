@@ -34,8 +34,8 @@ namespace bookStore_v._0._02.Logic
             }
             catch (Exception e)
             {
-                Console.WriteLine("Books are not found \n" + e.Message);
-                return new List<Book>(); //what do we need to return ? 
+                Console.WriteLine("Exception: FindBooksByField(" + field + ")" + "\n" + e.Message + "\n" + e.StackTrace);
+                return new List<Book>();
             }
         }
 
@@ -49,7 +49,7 @@ namespace bookStore_v._0._02.Logic
             }
             catch(Exception e)
             {
-                Console.WriteLine("The Book is not found \n" + e.Message);
+                Console.WriteLine("Exception: FindBookByID(" + id + ")" + "\n" + e.Message + "\n" + e.StackTrace);
                 return new Book(); //what do we need to return ? 
             }
         }
@@ -66,23 +66,60 @@ namespace bookStore_v._0._02.Logic
             }
             catch(Exception e)
             {
-                Console.WriteLine("The Book was not created" + e.Message);
+                Console.WriteLine("The Book was not created" + "\n" + e.Message + "\n" + e.StackTrace);
             }
             
         }
 
-        public static void EditBook(Book book, string field, string edit)
+        public static void EditBook(Book book)
         {
             using var bookShop = new BookShopContext();
             try
             {
                 var bookToEdit = bookShop.Books.Single(x => x.BookID == book.BookID);
-                //TODO
+                if (book == null || bookToEdit == null)
+                    throw new Exception("Source or/and Destination Objects are null");
 
+                Type typeSource = book.GetType();
+                Type typeDestintation = bookToEdit.GetType();
+
+                PropertyInfo[] srcProps = typeSource.GetProperties();
+                foreach (PropertyInfo srcProp in srcProps)
+                {
+                    if (!srcProp.CanRead)
+                    {
+                        continue;
+                    }
+                    PropertyInfo targetProperty = typeDestintation.GetProperty(srcProp.Name);
+                    if (targetProperty == null)
+                    {
+                        continue;
+                    }
+                    if (!targetProperty.CanWrite)
+                    {
+                        continue;
+                    }
+                    if (targetProperty.GetSetMethod(true) != null && targetProperty.GetSetMethod(true).IsPrivate)
+                    {
+                        continue;
+                    }
+                    if ((targetProperty.GetSetMethod().Attributes & MethodAttributes.Static) != 0)
+                    {
+                        continue;
+                    }
+                    if (!targetProperty.PropertyType.IsAssignableFrom(srcProp.PropertyType))
+                    {
+                        continue;
+                    }
+                    // Passed all tests, lets set the value
+                    targetProperty.SetValue(bookToEdit, srcProp.GetValue(book, null), null);
+                }
+                bookShop.SaveChanges();
+                Console.WriteLine("Edit Successful");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message + "\n" + e.StackTrace);
             }      
         }
 
@@ -104,7 +141,7 @@ namespace bookStore_v._0._02.Logic
             }
             catch(Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message + "\n" + e.StackTrace);
             }
         }
 
@@ -121,7 +158,7 @@ namespace bookStore_v._0._02.Logic
             }
             catch(Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message + "\n" + e.StackTrace);
             }
         }
     }
