@@ -10,21 +10,20 @@ using Newtonsoft.Json;
 
 namespace bookStore_v._0._02.Logic
 {
-    public static class CatalogLogic
+    public class CatalogLogic
     {
-        public static void InitializeDB()
+        BookShopContext bookShop = new BookShopContext();
+        public void InitializeDB()
         {
             var booksJson = File.ReadAllText(@"D:\Projects\repos\bookStore v.0.02\ProgrammersLibrary.json");
             Book[] bookShelf = JsonConvert.DeserializeObject<Book[]>(booksJson);
 
-            using var bookShop = new BookShopContext();
             bookShop.Books.AddRange(bookShelf);
             bookShop.SaveChanges();
         }
 
-        public static List<Book> FindBooksByField(string field)
+        public List<Book> FindBooksByField(string field)
         {
-            using var bookShop = new BookShopContext();
             try
             {
                 return bookShop.Books.Where(x => x.Author.Contains(field) ||
@@ -39,9 +38,8 @@ namespace bookStore_v._0._02.Logic
             }
         }
 
-        public static Book FindBookByID(string id)
+        public Book FindBookByID(string id)
         {
-            using var bookShop = new BookShopContext();
             try
             {
                 int intID = int.Parse(id);
@@ -50,13 +48,12 @@ namespace bookStore_v._0._02.Logic
             catch(Exception e)
             {
                 Console.WriteLine("Exception: FindBookByID(" + id + ")" + "\n" + e.Message + "\n" + e.StackTrace);
-                return new Book(); //what do we need to return ? 
+                return new Book();
             }
         }
 
-        public static void CreateBook(string book)
+        public void CreateBook(string book)
         {
-            using var bookShop = new BookShopContext();
             try
             {
                 Book newBook = JsonConvert.DeserializeObject<Book>(book);
@@ -71,9 +68,8 @@ namespace bookStore_v._0._02.Logic
             
         }
 
-        public static void EditBook(Book book)
+        public void EditBook(Book book)
         {
-            using var bookShop = new BookShopContext();
             try
             {
                 var bookToEdit = bookShop.Books.Single(x => x.BookID == book.BookID);
@@ -123,15 +119,13 @@ namespace bookStore_v._0._02.Logic
             }      
         }
 
-        public static List<Book> ShowCatalog()
+        public List<Book> ShowCatalog()
         {
-            using var bookShop = new BookShopContext();
             return bookShop.Books.OrderBy(x => x.BookID).ToList();
         }
 
-        public static void DeleteBook(Book book)
+        public void DeleteBook(Book book)
         {
-            using var bookShop = new BookShopContext();
             try
             {
                 var bookToDelete = bookShop.Books.Single(x => x.BookID == book.BookID);
@@ -145,10 +139,9 @@ namespace bookStore_v._0._02.Logic
             }
         }
 
-        public static void StockUpdate(string id, int amount)
+        public void StockUpdate(string id, int amount)
         {
             int intID = int.Parse(id);
-            using var bookShop = new BookShopContext();
             try
             {
                 var bookToUpdate = bookShop.Books.Single(x => x.BookID == intID);

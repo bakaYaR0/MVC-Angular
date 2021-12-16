@@ -12,14 +12,13 @@ namespace bookStore_v._0._02
     {
         static void Main(string[] args)
         {
-            var book = CatalogLogic.FindBookByID("60");
-            book.Author = "No way this works";
-            book.ISBN = "5";
-            book.Title = "Dreams of The Dying";
-            book.Pages = 458;
-            book.Value = 643;
+            var context = new CatalogLogic();
 
-            CatalogLogic.EditBook(book);
+            var bookShelf = context.ShowCatalog();
+            foreach (var book in bookShelf)
+            {
+                Console.WriteLine(book.Author + "\n" + book.Title);
+            }
 
         }
     }
