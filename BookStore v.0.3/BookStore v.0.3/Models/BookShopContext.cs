@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +9,7 @@ namespace bookStore_v._0._02.Models
 {
     public class BookShopContext : DbContext
     {
-        public BookShopContext() : base("DbConnection")
+        public BookShopContext() : base()
         { 
 
         }
