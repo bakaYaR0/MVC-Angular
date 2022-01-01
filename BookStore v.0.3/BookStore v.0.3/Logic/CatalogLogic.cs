@@ -12,7 +12,7 @@ namespace bookStore_v._0._02.Logic
 {
     public class CatalogLogic
     {
-        readonly BookShopContext bookShop;
+        public BookShopContext bookShop;
         public CatalogLogic()
         {
             bookShop = new BookShopContext();
