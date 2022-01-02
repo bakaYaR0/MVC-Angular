@@ -5,10 +5,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using bookStore_v._0._02.Models;
+using BookStore.Models;
 using Newtonsoft.Json;
 
-namespace bookStore_v._0._02.Logic
+namespace BookStore.Logic
 {
     public class CatalogLogic
     {
@@ -20,7 +20,7 @@ namespace bookStore_v._0._02.Logic
 
         public void InitializeDB()
         {
-            var booksJson = File.ReadAllText(@"D:\Projects\repos\BookStore v.0.3\BookStore v.0.3\ProgrammersLibrary.json");
+            var booksJson = File.ReadAllText(@"D:\Git\MVC-Angular\BookStore v.0.3\BookStore v.0.3\ProgrammersLibrary.json");
             Book[] bookShelf = JsonConvert.DeserializeObject<Book[]>(booksJson);
 
             bookShop.Books.AddRange(bookShelf);
@@ -50,7 +50,7 @@ namespace bookStore_v._0._02.Logic
                 int intID = int.Parse(id);
                 return bookShop.Books.Single(x => x.BookID == intID);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("Exception: FindBookByID(" + id + ")" + "\n" + e.Message + "\n" + e.StackTrace);
                 return new Book();
@@ -66,11 +66,11 @@ namespace bookStore_v._0._02.Logic
                 bookShop.SaveChanges();
                 Console.WriteLine("Addition Successful");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("The Book was not created" + "\n" + e.Message + "\n" + e.StackTrace);
             }
-            
+
         }
 
         public void EditBook(Book book)
@@ -98,7 +98,7 @@ namespace bookStore_v._0._02.Logic
             catch (Exception e)
             {
                 Console.WriteLine(e.Message + "\n" + e.StackTrace);
-            }      
+            }
         }
 
         public List<Book> ShowCatalog()
@@ -115,7 +115,7 @@ namespace bookStore_v._0._02.Logic
                 bookShop.SaveChanges();
                 Console.WriteLine("Deletion successful");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message + "\n" + e.StackTrace);
             }
@@ -131,7 +131,7 @@ namespace bookStore_v._0._02.Logic
                 bookShop.SaveChanges();
                 Console.WriteLine("Update successful");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message + "\n" + e.StackTrace);
             }

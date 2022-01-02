@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using BookStore.v._3.Models;
 
-namespace BookStore_v._0._3
+namespace BookStore
 {
     public class Startup
     {
@@ -26,6 +28,8 @@ namespace BookStore_v._0._3
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            services.AddDbContext<BookShopContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("BloggingDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

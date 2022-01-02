@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BookStore_v._0._3
+namespace BookStore
 {
     public class Program
     {
