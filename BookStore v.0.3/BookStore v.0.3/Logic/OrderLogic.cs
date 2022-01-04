@@ -1,4 +1,4 @@
-﻿using BookStore.Models;
+﻿using BookStore.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace BookStore.Logic
 {
-    internal class OrderLogic
+    public  class OrderLogic
     {
-        public BookShopContext bookShop;
-        public OrderLogic()
+        private readonly BookShopContext _bookShop;
+        public OrderLogic(BookShopContext context)
         {
-            bookShop = new BookShopContext();
+            _bookShop = context;
         }
 
         public void MakeOrder()

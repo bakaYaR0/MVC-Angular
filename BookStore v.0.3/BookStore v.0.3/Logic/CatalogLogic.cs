@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using BookStore.Data;
 using BookStore.Models;
 using Newtonsoft.Json;
 
@@ -12,26 +13,17 @@ namespace BookStore.Logic
 {
     public class CatalogLogic
     {
-        public BookShopContext bookShop;
-        public CatalogLogic()
+        private readonly BookShopContext _bookShop;
+        public CatalogLogic(BookShopContext context)
         {
-            bookShop = new BookShopContext();
-        }
-
-        public void InitializeDB()
-        {
-            var booksJson = File.ReadAllText(@"D:\Git\MVC-Angular\BookStore v.0.3\BookStore v.0.3\ProgrammersLibrary.json");
-            Book[] bookShelf = JsonConvert.DeserializeObject<Book[]>(booksJson);
-
-            bookShop.Books.AddRange(bookShelf);
-            bookShop.SaveChanges();
+            _bookShop = context;
         }
 
         public List<Book> FindBooksByField(string field)
         {
             try
             {
-                return bookShop.Books.Where(x => x.Author.Contains(field) ||
+                return _bookShop.Books.Where(x => x.Author.Contains(field) ||
                                                 x.ISBN.Contains(field) ||
                                                 x.Title.Contains(field) ||
                                                 x.Description.Contains(field)).ToList();
@@ -48,7 +40,7 @@ namespace BookStore.Logic
             try
             {
                 int intID = int.Parse(id);
-                return bookShop.Books.Single(x => x.BookID == intID);
+                return _bookShop.Books.Single(x => x.BookID == intID);
             }
             catch (Exception e)
             {
@@ -62,8 +54,8 @@ namespace BookStore.Logic
             try
             {
                 Book newBook = JsonConvert.DeserializeObject<Book>(book);
-                bookShop.Books.Add(newBook);
-                bookShop.SaveChanges();
+                _bookShop.Books.Add(newBook);
+                _bookShop.SaveChanges();
                 Console.WriteLine("Addition Successful");
             }
             catch (Exception e)
@@ -73,11 +65,11 @@ namespace BookStore.Logic
 
         }
 
-        public void EditBook(Book book)
+        public async void EditBook(Book book)
         {
             try
             {
-                var bookToEdit = bookShop.Books.Single(x => x.BookID == book.BookID);
+                var bookToEdit = _bookShop.Books.Single(x => x.BookID == book.BookID);
                 if (book == null || bookToEdit == null)
                     throw new Exception("Source or/and Destination Objects are null");
 
@@ -92,7 +84,7 @@ namespace BookStore.Logic
                 bookToEdit.AmountInStock = book.AmountInStock;
                 bookToEdit.Value = book.Value;
 
-                bookShop.SaveChanges();
+                await _bookShop.SaveChangesAsync();
                 Console.WriteLine("Edit Successful");
             }
             catch (Exception e)
@@ -103,16 +95,16 @@ namespace BookStore.Logic
 
         public List<Book> ShowCatalog()
         {
-            return bookShop.Books.OrderBy(x => x.BookID).ToList();
+            return _bookShop.Books.OrderBy(x => x.BookID).ToList();
         }
 
-        public void DeleteBook(Book book)
+        public async void DeleteBook(Book book)
         {
             try
             {
-                var bookToDelete = bookShop.Books.Single(x => x.BookID == book.BookID);
-                bookShop.Books.Remove(bookToDelete);
-                bookShop.SaveChanges();
+                var bookToDelete = _bookShop.Books.Single(x => x.BookID == book.BookID);
+                _bookShop.Books.Remove(bookToDelete);
+                await _bookShop.SaveChangesAsync();
                 Console.WriteLine("Deletion successful");
             }
             catch (Exception e)
@@ -121,14 +113,14 @@ namespace BookStore.Logic
             }
         }
 
-        public void StockUpdate(string id, int amount)
+        public async void StockUpdate(string id, int amount)
         {
             int intID = int.Parse(id);
             try
             {
-                var bookToUpdate = bookShop.Books.Single(x => x.BookID == intID);
+                var bookToUpdate = _bookShop.Books.Single(x => x.BookID == intID);
                 bookToUpdate.AmountInStock = amount;
-                bookShop.SaveChanges();
+                await _bookShop.SaveChangesAsync();
                 Console.WriteLine("Update successful");
             }
             catch (Exception e)

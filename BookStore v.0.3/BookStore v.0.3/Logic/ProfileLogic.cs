@@ -1,4 +1,5 @@
-﻿using BookStore.Models;
+﻿using BookStore.Data;
+using BookStore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace BookStore.Logic
 {
-    internal class ProfileLogic
+    public class ProfileLogic
     {
-        public BookShopContext bookShop;
-        public ProfileLogic()
+        private readonly BookShopContext _bookShop;
+        public ProfileLogic(BookShopContext context)
         {
-            bookShop = new BookShopContext();
+            _bookShop = context;
         }
 
         public Profile CreateProfile()

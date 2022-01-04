@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using BookStore.v._3.Models;
+using BookStore.Data;
 
 namespace BookStore
 {
@@ -29,7 +29,7 @@ namespace BookStore
                 configuration.RootPath = "ClientApp/dist";
             });
             services.AddDbContext<BookShopContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("BloggingDatabase")));
+                options.UseSqlServer(Configuration.GetConnectionString("BookShopContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
