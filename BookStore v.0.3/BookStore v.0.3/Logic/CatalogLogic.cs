@@ -62,7 +62,6 @@ namespace BookStore.Logic
             {
                 Console.WriteLine("The Book was not created" + "\n" + e.Message + "\n" + e.StackTrace);
             }
-
         }
 
         public async void EditBook(Book book)
