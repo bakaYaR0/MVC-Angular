@@ -21,7 +21,7 @@ namespace BookStore.Data
                     return;
                 }
 
-                var booksJson = File.ReadAllText(@"D:\Git\MVC-Angular\BookStore v.0.3\BookStore v.0.3\ProgrammersLibrary.json");
+                var booksJson = File.ReadAllText(@"D:\Git\MVC-Angular\BookStore v.0.3\BookStore v.0.3\Data\ProgrammersLibrary.json");
                 Book[] bookShelf = JsonConvert.DeserializeObject<Book[]>(booksJson);
 
                 context.Books.AddRange(bookShelf);
