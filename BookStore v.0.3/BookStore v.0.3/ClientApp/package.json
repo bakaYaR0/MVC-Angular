@@ -1,11 +1,11 @@
 {
-  "name": "bookstore_v._0._3",
+  "name": "bookstore",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:ssr": "ng run BookStore_v._0._3:server:dev",
+    "build:ssr": "ng run BookStore:server:dev",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
