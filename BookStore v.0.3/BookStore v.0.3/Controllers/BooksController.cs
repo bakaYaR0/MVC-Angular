@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BookStore.Data;
 using BookStore.Models;
+using BookStore.Logic;
 
 namespace BookStore.Controllers
 {
-    public class BooksController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BooksController : ControllerBase
     {
         private readonly BookShopContext _context;
 
@@ -19,130 +22,86 @@ namespace BookStore.Controllers
             _context = context;
         }
 
-        // GET: Books
-        public async Task<IActionResult> Index()
+        // GET: api/Books
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
-            return View(await _context.Books.ToListAsync());
+            CatalogLogic logic = new CatalogLogic(_context);
+            return await logic.ShowCatalog();
         }
 
-        // GET: Books/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/Books/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Book>> GetBook(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            CatalogLogic logic = new CatalogLogic(_context);
 
-            var book = await _context.Books
-                .FirstOrDefaultAsync(m => m.BookID == id);
+            var book = await logic.FindBookByID(id);
+
             if (book == null)
             {
                 return NotFound();
             }
 
-            return View(book);
+            return book;
         }
 
-        // GET: Books/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Books/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookID,ISBN,Title,Subtitle,Author,Publisher,Pages,Description,Value,AmountInStock")] Book book)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(book);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(book);
-        }
-
-        // GET: Books/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var book = await _context.Books.FindAsync(id);
-            if (book == null)
-            {
-                return NotFound();
-            }
-            return View(book);
-        }
-
-        // POST: Books/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookID,ISBN,Title,Subtitle,Author,Publisher,Pages,Description,Value,AmountInStock")] Book book)
+        // PUT: api/Books/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutBook(int id, Book book)
         {
             if (id != book.BookID)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            if (ModelState.IsValid)
+            _context.Entry(book).State = EntityState.Modified;
+
+            try
             {
-                try
-                {
-                    _context.Update(book);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BookExists(book.BookID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
             }
-            return View(book);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!BookExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // GET: Books/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // POST: api/Books
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Book>> PostBook(Book book)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            _context.Books.Add(book);
+            await _context.SaveChangesAsync();
 
-            var book = await _context.Books
-                .FirstOrDefaultAsync(m => m.BookID == id);
+            return CreatedAtAction("GetBook", new { id = book.BookID }, book);
+        }
+
+        // DELETE: api/Books/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBook(int id)
+        {
+            var book = await _context.Books.FindAsync(id);
             if (book == null)
             {
                 return NotFound();
             }
 
-            return View(book);
-        }
-
-        // POST: Books/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var book = await _context.Books.FindAsync(id);
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            return NoContent();
         }
 
         private bool BookExists(int id)
