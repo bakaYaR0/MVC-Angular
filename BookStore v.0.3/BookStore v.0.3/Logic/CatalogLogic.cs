@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BookStore.Data;
 using BookStore.Models;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace BookStore.Logic
@@ -19,28 +20,16 @@ namespace BookStore.Logic
             _bookShop = context;
         }
 
-        public List<Book> FindBooksByField(string field)
+        public async Task<List<Book>> ShowCatalog()
         {
-            try
-            {
-                return _bookShop.Books.Where(x => x.Author.Contains(field) ||
-                                                x.ISBN.Contains(field) ||
-                                                x.Title.Contains(field) ||
-                                                x.Description.Contains(field)).ToList();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception: FindBooksByField(" + field + ")" + "\n" + e.Message + "\n" + e.StackTrace);
-                return new List<Book>();
-            }
+            return await _bookShop.Books.OrderBy(x => x.BookID).ToListAsync();
         }
 
-        public Book FindBookByID(string id)
+        public async Task<Book> FindBookByID(int id)
         {
             try
             {
-                int intID = int.Parse(id);
-                return _bookShop.Books.Single(x => x.BookID == intID);
+                return await _bookShop.Books.SingleAsync(x => x.BookID == id);
             }
             catch (Exception e)
             {
@@ -49,12 +38,27 @@ namespace BookStore.Logic
             }
         }
 
-        public void CreateBook(string book)
+        public async Task<List<Book>> FindBooksByField(string field)
         {
             try
             {
-                Book newBook = JsonConvert.DeserializeObject<Book>(book);
-                _bookShop.Books.Add(newBook);
+                return await _bookShop.Books.Where(x => x.Author.Contains(field) ||
+                                                x.ISBN.Contains(field) ||
+                                                x.Title.Contains(field) ||
+                                                x.Description.Contains(field)).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: FindBooksByField(" + field + ")" + "\n" + e.Message + "\n" + e.StackTrace);
+                return new List<Book>();
+            }
+        }
+
+        public void CreateBook(Book book)
+        {
+            try
+            {
+                _bookShop.Books.Add(book);
                 _bookShop.SaveChanges();
                 Console.WriteLine("Addition Successful");
             }
@@ -92,11 +96,6 @@ namespace BookStore.Logic
             }
         }
 
-        public List<Book> ShowCatalog()
-        {
-            return _bookShop.Books.OrderBy(x => x.BookID).ToList();
-        }
-
         public async void DeleteBook(Book book)
         {
             try
@@ -112,12 +111,11 @@ namespace BookStore.Logic
             }
         }
 
-        public async void StockUpdate(string id, int amount)
+        public async void StockUpdate(int id, int amount)
         {
-            int intID = int.Parse(id);
             try
             {
-                var bookToUpdate = _bookShop.Books.Single(x => x.BookID == intID);
+                var bookToUpdate = _bookShop.Books.Single(x => x.BookID == id);
                 bookToUpdate.AmountInStock = amount;
                 await _bookShop.SaveChangesAsync();
                 Console.WriteLine("Update successful");
