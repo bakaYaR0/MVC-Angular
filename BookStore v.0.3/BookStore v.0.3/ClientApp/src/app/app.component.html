@@ -1,6 +1,23 @@
-<body>
-  <app-nav-menu></app-nav-menu>
-  <div class="container">
-    <router-outlet></router-outlet>
-  </div>
-</body>
+<h1>Book list</h1>
+
+<table *ngIf="tableMode; else create" class="table table-striped">
+  <thead>
+    <tr>
+      <td><h2>Author</h2></td>
+      <td><h2>Title</h2></td>
+      <td><h2>Price</h2></td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of products">
+        <td>{{p?.author}}</td>
+        <td>{{p?.title}}</td>
+        <td>{{p?.value}}</td>
+        <td>
+          <button class="btn btn-sm btn-primary" (click)="editProduct(p)">Details</button>
+          <button class="btn btn-sm btn-success" (click)="delete(p)">Add to Cart</button>
+        </td>
+    </tr>
+  </tbody>
+</table>
