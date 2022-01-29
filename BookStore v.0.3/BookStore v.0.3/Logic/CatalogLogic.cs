@@ -34,7 +34,7 @@ namespace BookStore.Logic
             catch (Exception e)
             {
                 Console.WriteLine("Exception: FindBookByID(" + id + ")" + "\n" + e.Message + "\n" + e.StackTrace);
-                return new Book();
+                return null;
             }
         }
 
