@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookStore.Migrations
 {
     [DbContext(typeof(BookShopContext))]
-    [Migration("20220109075708_InitialCreate")]
+    [Migration("20220129173942_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,8 +70,8 @@ namespace BookStore.Migrations
                     b.Property<string>("ISBN")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OrderID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("OrderID")
+                        .HasColumnType("int");
 
                     b.Property<int>("Pages")
                         .HasColumnType("int");
@@ -97,8 +97,10 @@ namespace BookStore.Migrations
 
             modelBuilder.Entity("BookStore.Models.Order", b =>
                 {
-                    b.Property<string>("OrderID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("OrderID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("AddressID")
                         .HasColumnType("int");
@@ -109,8 +111,8 @@ namespace BookStore.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("OrderOwnerProfileID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("OrderOwnerProfileID")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("OrderValue")
                         .HasColumnType("decimal(18,2)");
@@ -132,8 +134,10 @@ namespace BookStore.Migrations
 
             modelBuilder.Entity("BookStore.Models.Profile", b =>
                 {
-                    b.Property<string>("ProfileID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProfileID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Birthdate")
                         .HasColumnType("datetime2");
@@ -150,12 +154,7 @@ namespace BookStore.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserRoleRoleID")
-                        .HasColumnType("int");
-
                     b.HasKey("ProfileID");
-
-                    b.HasIndex("UserRoleRoleID");
 
                     b.ToTable("Profiles");
                 });
@@ -174,6 +173,9 @@ namespace BookStore.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("RoleID");
+
+                    b.HasIndex("ProfileID")
+                        .IsUnique();
 
                     b.ToTable("Roles");
                 });
@@ -200,18 +202,23 @@ namespace BookStore.Migrations
                     b.Navigation("OrderOwner");
                 });
 
-            modelBuilder.Entity("BookStore.Models.Profile", b =>
+            modelBuilder.Entity("BookStore.Models.Role", b =>
                 {
-                    b.HasOne("BookStore.Models.Role", "UserRole")
-                        .WithMany()
-                        .HasForeignKey("UserRoleRoleID");
-
-                    b.Navigation("UserRole");
+                    b.HasOne("BookStore.Models.Profile", null)
+                        .WithOne("UserRole")
+                        .HasForeignKey("BookStore.Models.Role", "ProfileID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BookStore.Models.Order", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("BookStore.Models.Profile", b =>
+                {
+                    b.Navigation("UserRole");
                 });
 #pragma warning restore 612, 618
         }
