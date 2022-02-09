@@ -62,14 +62,14 @@ namespace BookStore.Controllers
 
         // PUT: api/Catalog/5
         [HttpPut("{id}")]
-        public IActionResult PutBook(int id, Book book)
+        public async Task<IActionResult> PutBook(int id, Book book)
         {
             if (id != book.BookID)
             {
                 return BadRequest();
             }
 
-            _logic.EditBook(book);
+            await _logic.EditBook(book);
 
             return NoContent();
         }
@@ -84,7 +84,7 @@ namespace BookStore.Controllers
                 return NotFound();
             }
 
-            _logic.DeleteBook(book);
+            await _logic.DeleteBook(book);
 
             return NoContent();
         }
