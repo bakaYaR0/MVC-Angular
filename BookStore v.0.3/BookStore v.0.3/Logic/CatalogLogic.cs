@@ -68,7 +68,7 @@ namespace BookStore.Logic
             }
         }
 
-        public async Task<bool> EditBook(Book book)
+        public async void EditBook(Book book)
         {
             try
             {
@@ -89,16 +89,14 @@ namespace BookStore.Logic
 
                 await _bookShop.SaveChangesAsync();
                 Console.WriteLine("Edit Successful");
-                return true;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message + "\n" + e.StackTrace);
-                return false;
             }
         }
 
-        public async Task<bool> DeleteBook(Book book)
+        public async void DeleteBook(Book book)
         {
             try
             {
@@ -106,12 +104,10 @@ namespace BookStore.Logic
                 _bookShop.Books.Remove(bookToDelete);
                 await _bookShop.SaveChangesAsync();
                 Console.WriteLine("Deletion successful");
-                return true;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message + "\n" + e.StackTrace);
-                return false;
             }
         }
 
