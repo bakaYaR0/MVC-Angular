@@ -1,0 +1,40 @@
+<h1>Book list</h1>
+<div>
+    <input type="text" placeholder="Search..">
+    <button class="btn btn-sm btn-success" href="#">Search</button>
+</div>
+<div>
+    <a class="nav-link" routerLink="/addnew" routerLinkActive="active">
+        <i class="far fa-question-circle me-1"></i>AddNew
+    </a>
+</div>
+
+
+
+<table class="table table-striped">
+  <thead>
+      <tr>
+        <td><h2>ID</h2></td>
+        <td><h2>Author</h2></td>
+        <td><h2>Title</h2></td>
+        <td><h2>Price</h2></td>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let p of products">
+        <td>{{p?.id}}</td>
+        <td>{{p?.author}}</td>
+        <td>{{p?.title}}</td>
+        <td>{{p?.value}}</td>
+        <td>
+            <a [routerLink]="['/books', p?.id]">Details</a>
+            <button type="button" (click)="showDetails()">
+            Details
+            </button>
+            <button type="button" (click)="addToCart()">
+            Add to Cart
+            </button>
+        </td>
+      </tr>
+  </tbody>
+</table>

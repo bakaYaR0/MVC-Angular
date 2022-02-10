@@ -32,7 +32,7 @@ namespace BookStore
             });
             services.AddScoped<CatalogLogic>();
             services.AddControllers();
-            services.AddSwaggerGen();
+            //services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,23 +63,23 @@ namespace BookStore
                 endpoints.MapControllers();
             });
 
-            app.UseSwagger();
+            //app.UseSwagger();
 
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PaymentAPI v1");
-                c.RoutePrefix = string.Empty;
-            });
-
-            //app.UseSpa(spa =>
+            //app.UseSwaggerUI(c =>
             //{
-            //    spa.Options.SourcePath = "ClientApp";
-
-            //    if (env.IsDevelopment())
-            //    {
-            //        spa.UseAngularCliServer(npmScript: "start");
-            //    }
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "PaymentAPI v1");
+            //    c.RoutePrefix = string.Empty;
             //});
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
+            });
         }
     }
 }

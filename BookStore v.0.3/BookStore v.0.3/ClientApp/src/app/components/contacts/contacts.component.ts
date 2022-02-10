@@ -6,5 +6,4 @@ import { Component, OnInit } from '@angular/core';
   styles: []
 })
 export class ContactsComponent {
-  title = 'Best Book Store ever!';
 }

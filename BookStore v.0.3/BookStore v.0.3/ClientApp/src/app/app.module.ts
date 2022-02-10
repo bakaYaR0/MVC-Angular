@@ -1,16 +1,36 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http'
+import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './components/home/home.component';
+import { NavMenuComponent } from './components/navigation/navigation.component';
+import { DataService } from './services/data.service';
+import { CatalogComponent } from './components/catalog/catalog.component';
+import { AboutComponent } from './components/about/about.component';
+import { ContactsComponent } from './components/contacts/contacts.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, HttpClientModule],
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    NavMenuComponent,
+    CatalogComponent,
+    AboutComponent,
+    ContactsComponent,
+    ProductDetailsComponent
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
+  providers: [DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
