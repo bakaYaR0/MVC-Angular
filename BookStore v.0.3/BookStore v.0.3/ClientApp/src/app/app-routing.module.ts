@@ -6,13 +6,16 @@ import { CatalogComponent } from 'src/app/components/catalog/catalog.component';
 import { AboutComponent } from 'src/app/components/about/about.component';
 import { ContactsComponent } from 'src/app/components/contacts/contacts.component';
 import { AddNewComponent } from './components/catalog/addnew.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
 
 const routes: Routes = [
     { path: 'catalog', component: CatalogComponent },
     { path: 'home', component: HomeComponent },
     { path: 'about', component: AboutComponent },
     { path: 'contact', component: ContactsComponent },
-    { path: 'addnew', component: AddNewComponent}
+    { path: 'addnew', component: AddNewComponent },
+    { path: 'details', component: ProductDetailsComponent },
+    { path: '**', redirectTo: '/home' }
 ];
 
 @NgModule({

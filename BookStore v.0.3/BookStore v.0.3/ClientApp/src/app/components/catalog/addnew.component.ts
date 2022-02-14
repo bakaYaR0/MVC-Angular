@@ -7,7 +7,7 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class AddNewComponent implements OnInit {
     book: Book = {
-        id: '',
+        bookID: '',
         isbn: '',
         title: '',
         subtitle: '',
@@ -24,7 +24,7 @@ export class AddNewComponent implements OnInit {
     }
     saveBook(): void {
         const data = {
-            id: this.book.id,
+            id: this.book.bookID,
             isbn: this.book.isbn,
             title: this.book.title,
             subtitle: this.book.subtitle,
@@ -47,7 +47,7 @@ export class AddNewComponent implements OnInit {
     newBook(): void {
         this.submitted = false;
         this.book = {
-            id: '',
+            bookID: '',
             isbn: '',
             title: '',
             subtitle: '',
