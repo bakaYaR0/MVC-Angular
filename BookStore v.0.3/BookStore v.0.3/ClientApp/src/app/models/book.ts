@@ -1,5 +1,5 @@
 export class Book {
-    public id?: any;
+    public bookID?: any;
     public isbn?: string;
     public title?: string;
     public subtitle?: string;
