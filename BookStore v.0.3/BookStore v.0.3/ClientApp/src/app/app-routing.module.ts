@@ -7,6 +7,7 @@ import { AboutComponent } from 'src/app/components/about/about.component';
 import { ContactsComponent } from 'src/app/components/contacts/contacts.component';
 import { AddNewComponent } from './components/catalog/addnew.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { EditComponent } from './components/product-details/edit.component';
 
 const routes: Routes = [
     { path: 'catalog', component: CatalogComponent },
@@ -14,7 +15,8 @@ const routes: Routes = [
     { path: 'about', component: AboutComponent },
     { path: 'contact', component: ContactsComponent },
     { path: 'addnew', component: AddNewComponent },
-    { path: 'details', component: ProductDetailsComponent },
+    { path: 'catalog/:bookID/details', component: ProductDetailsComponent },
+    { path: 'catalog/:bookID/edit', component: EditComponent},
     { path: '**', redirectTo: '/home' }
 ];
 
