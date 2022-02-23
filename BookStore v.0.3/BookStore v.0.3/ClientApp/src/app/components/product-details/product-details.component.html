@@ -1,5 +1,49 @@
-﻿<div class="container mt-3">
-    <div class="list-group">
-        it works!
+﻿<div *ngIf="book" class="container mt-3">
+    <div class="container mt-5">
+        <h3>{{book.title}}</h3>
+        <a href="#" routerLink="/catalog" class="btn btn-primary" style="margin-top:10px">Back</a>
+    </div>
+
+    <div class="container mt-5">
+            <div>
+                <div class="list-group" style="max-width: 360px">
+                    <label for="isbn" style="font-weight: 700">ISBN</label>
+                    <p>{{book.isbn}}</p>
+                </div>
+                <div class="list-group" style="max-width: 360px">
+                    <label for="title" style="font-weight: 700">Title</label>
+                    <p>{{book.title}}</p>
+                </div>
+                <div class="list-group" style="max-width: 360px">
+                    <label for="subtitle" style="font-weight: 700">Subtitle</label>
+                    <p>{{book.subtitle}}</p>
+                </div>
+                <div class="list-group" style="max-width: 360px">
+                    <label for="author" style="font-weight: 700">Author</label>
+                    <p>{{book.author}}</p>
+                </div>
+                <div class="list-group" style="max-width: 360px">
+                    <label for="publisher" style="font-weight: 700">Publisher</label>
+                    <p>{{book.publisher}}</p>
+                </div>
+                <div class="list-group" style="max-width: 360px">
+                    <label for="pages" style="font-weight: 700">Pages</label>
+                    <p>{{book.pages}}</p>
+                </div>
+                <div class="list-group" style="max-width: 360px">
+                    <label for="value" style="font-weight: 700">Value</label>
+                    <p>{{book.value}}</p>
+                </div>
+                <div class="list-group" style="max-width: 460px">
+                    <label for="description" style="font-weight: 700">Description</label>
+                    <p>{{book.description}}</p>
+                </div>
+            </div>
+    </div>
+    <div class="btn">
+        <a href="#" [routerLink]="['/catalog/', book.bookID, 'edit'] " class="btn btn-outline-primary" style="margin-block-start: 30px">Edit</a>
+    </div>
+    <div class="btn">
+        <button (click)="deleteBook()" class="btn btn-outline-danger" style="margin-block-start: 30px">Delete</button>
     </div>
 </div>
