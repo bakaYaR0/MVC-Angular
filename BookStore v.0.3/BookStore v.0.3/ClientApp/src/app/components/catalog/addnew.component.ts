@@ -1,11 +1,14 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Book } from 'src/app/models/book';
 import { DataService } from 'src/app/services/data.service';
+import { Router } from '@angular/router';
+
 @Component({
     selector: 'app-add-new',
     templateUrl: './addnew.component.html'
 })
 export class AddNewComponent implements OnInit {
+    submitted = false;
     book: Book = {
         bookID: '',
         isbn: '',
@@ -18,8 +21,11 @@ export class AddNewComponent implements OnInit {
         amountInStock: 0,
         description: '',
     };
-    submitted = false;
-    constructor(private dataService: DataService) { }
+
+    constructor(private dataService: DataService,
+        private router: Router
+    ) { }
+
     ngOnInit(): void {
     }
     saveBook(): void {
@@ -43,6 +49,7 @@ export class AddNewComponent implements OnInit {
                 },
                 error: (e) => console.error(e)
             });
+        this.router.navigateByUrl('catalog')
     }
     newBook(): void {
         this.submitted = false;
