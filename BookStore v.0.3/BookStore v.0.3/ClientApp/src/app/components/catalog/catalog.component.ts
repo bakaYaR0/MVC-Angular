@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+
 import { DataService } from 'src/app/services/data.service';
 import { Book } from 'src/app/models/book';
 
@@ -11,28 +11,34 @@ import { Book } from 'src/app/models/book';
 
 export class CatalogComponent implements OnInit {
 
-  product: Book = new Book();   
-  products!: Book[];                
-  tableMode: boolean = true;          
+    searchString: string = '';
+    product: Book = {};
+    products?: Book[];
+    displayedProducts?: Book[];
 
   constructor(private dataService: DataService) { }
 
-    ngOnInit() {
+    ngOnInit() : void {
         this.loadProducts();      
     }
   
-    loadProducts() {
+    loadProducts() : void {
         this.dataService.getProducts()
-            .subscribe((data:any) => {
-            this.products = data;
-            })
+            .subscribe({
+                next: (data) => {
+                    this.products = data;
+                    this.displayedProducts = data;
+                    console.log(data)
+                },
+                error: (e) => console.error(e)
+            });
     }
 
-    showDetails() {
-        this.dataService.getProduct(this.product.id)
-            .subscribe((data: any) => {
-                this.product = data;
-            })
+    findBook(): void {
+        
+        this.displayedProducts = this.products?.filter(book =>
+            book.isbn?.includes(this.searchString) ||
+            book.author?.includes(this.searchString) ||
+            book.title?.includes(this.searchString));
     }
-    addToCart() { }
 }

@@ -1,40 +1,38 @@
-<h1>Book list</h1>
-<div>
-    <input type="text" placeholder="Search..">
-    <button class="btn btn-sm btn-success" href="#">Search</button>
+<div class="container mt-3">
+    <h1>Book list</h1>
+    <div class="input-group" style="padding-block-start: 30px; padding-block-end: 30px; max-width: 512px">
+        <input [(ngModel)]="searchString" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+        <button (click)="findBook()" type="button" class="btn btn-outline-primary">search</button>
+    </div>
+    <div>
+        <a class="btn btn-outline-success" routerLink="/addnew" routerLinkActive="active">
+            Add New Book
+        </a>
+    </div>
+    <div style="padding-block-start: 30px; padding-block-end: 30px">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <td><h2>ISBN</h2></td>
+                    <td><h2>Title</h2></td>
+                    <td><h2>Author</h2></td>
+                    <td><h2>Price</h2></td>
+                    <td><h2></h2></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of displayedProducts">
+                    <td>{{p?.isbn}}</td>
+                    <td>{{p?.title}}</td>
+                    <td>{{p?.author}}</td>
+                    <td>{{p?.value}}</td>
+                    <td align="center">
+                        <a href="#" [routerLink]="['/catalog/', p.bookID, 'details']" routerLinkActive="active" class="btn btn-outline-dark">
+                            Book Details
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-<div>
-    <a class="nav-link" routerLink="/addnew" routerLinkActive="active">
-        <i class="far fa-question-circle me-1"></i>AddNew
-    </a>
-</div>
-
-
-
-<table class="table table-striped">
-  <thead>
-      <tr>
-        <td><h2>ID</h2></td>
-        <td><h2>Author</h2></td>
-        <td><h2>Title</h2></td>
-        <td><h2>Price</h2></td>
-      </tr>
-  </thead>
-  <tbody>
-      <tr *ngFor="let p of products">
-        <td>{{p?.id}}</td>
-        <td>{{p?.author}}</td>
-        <td>{{p?.title}}</td>
-        <td>{{p?.value}}</td>
-        <td>
-            <a [routerLink]="['/books', p?.id]">Details</a>
-            <button type="button" (click)="showDetails()">
-            Details
-            </button>
-            <button type="button" (click)="addToCart()">
-            Add to Cart
-            </button>
-        </td>
-      </tr>
-  </tbody>
-</table>
